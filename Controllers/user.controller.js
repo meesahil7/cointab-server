@@ -71,7 +71,7 @@ const login = async (req, res) => {
           { _id: user._id },
           { $set: { lock_until: null, suspect: false, login_error: 0 } }
         );
-        return res.send({ Response: "Logged in successfully", Token: token });
+        return res.send({ messages: "Logged in successfully", Token: token });
       } else {
         const attempt = user.login_error + 1;
         await userModel.findByIdAndUpdate(
