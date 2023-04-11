@@ -40,7 +40,7 @@ const login = async (req, res) => {
     if (user.lock_until !== null && Date.now() > user.lock_until) {
       await userModel.findByIdAndUpdate(
         { _id: user._id },
-        { $set: { suspect: false, lock_until: null } }
+        { $set: { suspect: false, lock_until: null, login_error: 0 } }
       );
     }
 
