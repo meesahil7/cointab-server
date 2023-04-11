@@ -24,7 +24,7 @@ const register = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.send({ message: "Cannot register user" });
+    res.send({ err: "Cannot register user" });
   }
 };
 
@@ -34,7 +34,7 @@ const login = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return res.send({ message: "User is not registered" });
+      return res.send({ err: "User is not registered" });
     }
 
     if (user.lock_until !== null && Date.now() > user.lock_until) {
@@ -59,7 +59,7 @@ const login = async (req, res) => {
       );
       return res.send({
         warning: "Maximum attempt limit exceeded",
-        message: "Try after 24 hours from your last wrong attempt",
+        err: "Try after 24 hours from your last wrong attempt",
       });
     }
 
@@ -80,7 +80,7 @@ const login = async (req, res) => {
         );
 
         return res.send({
-          message: "Wrong password",
+          err: "Wrong password",
           total_attempts: user.login_error + 1,
           attempts_remaining: 5 - user.login_error - 1,
         });
@@ -89,7 +89,7 @@ const login = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.send(err.message);
-    res.send({ message: "Wrong credentials" });
+    res.send({ err: "Wrong credentials" });
   }
 };
 
