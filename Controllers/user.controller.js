@@ -40,7 +40,7 @@ const login = async (req, res) => {
     let {login_error, lock_until, suspect} = user;
 
     if (lock_until >= Date.now()) {
-      return res.send({ message: "Try after 24 hours from your last wrong attempt" });
+      return res.send({ warning: "Try after 24 hours from your last wrong attempt" });
     }
 
     if (lock_until !== null && Date.now() > lock_until) {
@@ -68,7 +68,7 @@ const login = async (req, res) => {
         if (wrong_attempt === 5) {
           const unlock = Date.now() + 24 * 3600 * 1000;
           await userModel.findByIdAndUpdate({_id: user._id}, {$set: {lock_until: unlock, login_error: wrong_attempt, suspect: true}});
-          return res.send({ message: "Try after 24 hours from your last wrong attempt" });
+          return res.send({ warning: "Try after 24 hours from your last wrong attempt" });
         }
 
         return res.send({
